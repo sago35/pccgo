@@ -40,3 +40,10 @@ C/C++のプロジェクトでは、
     #   C Compiler   : arm-none-eabi-gcc.exe -> arm-none-eabi-gcc.wo_join.exe
 
     # 注意) lpcxpressoを立ち上げる時点で、PATHに`c:\nxp\LPCXpresso_8.2.2_650\lpcxpresso\tools\bin`を追加しておくこと
+
+## 注意
+
+Eclipseベースのlpcxpressoでは、`C/C++ Build > Behavior > Enable parallel build`を有効にすると分散Buildできます。
+makeベースのプロジェクトは、`make --jobs`で分散Buildできます。
+
+本サンプルは、そのような環境が用意されていない場合用、となります。
