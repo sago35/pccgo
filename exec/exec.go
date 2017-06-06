@@ -1,11 +1,9 @@
 package exec
 
 import (
-	"fmt"
 	"io"
 	"os/exec"
 	"syscall"
-	"time"
 )
 
 type Cmd struct {
