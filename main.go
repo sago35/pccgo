@@ -41,6 +41,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	e.Stdout = os.Stdout
 	e.Stderr = os.Stderr
 
+	fmt.Println(e.Target)
 	if e.Join {
 		// Join時は、並列実行されたJobの終了を待つ
 		for len(limit) > 1 {
