@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	ch    = make(chan *exec.Cmd)
+	ch    = make(chan *exec.Cmd, 10)
 	limit = make(chan struct{}, 4)
 )
 
