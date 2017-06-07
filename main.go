@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"time"
+	"sync"
 
 	"github.com/sago35/pccgo/exec"
 )
@@ -14,6 +14,7 @@ import (
 var (
 	ch    = make(chan *exec.Cmd, 10)
 	limit = make(chan struct{}, 4)
+	wg    sync.WaitGroup
 )
 
 func main() {
@@ -44,9 +45,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(e.Target)
 	if e.Join {
 		// Join時は、並列実行されたJobの終了を待つ
-		for len(limit) > 1 {
-			time.Sleep(200 * time.Millisecond)
-		}
+		wg.Wait()
 		e.Run()
 	} else {
 		ch <- &e
@@ -61,8 +60,10 @@ func buildLoop() {
 		select {
 		case limit <- empty:
 			e := <-ch
+			wg.Add(1)
 			go func(x *exec.Cmd) {
 				x.Run()
+				wg.Done()
 				<-limit
 			}(e)
 		}
