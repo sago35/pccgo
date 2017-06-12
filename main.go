@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -12,12 +13,15 @@ import (
 )
 
 var (
-	ch    = make(chan *exec.Cmd, 10)
-	limit = make(chan struct{}, 4)
-	wg    sync.WaitGroup
+	ch      = make(chan *exec.Cmd, 10)
+	limit   chan struct{}
+	threads = flag.Uint("threads", 4, "How many threads to exec")
+	wg      sync.WaitGroup
 )
 
 func main() {
+	flag.Parse()
+	limit = make(chan struct{}, *threads)
 	runServer()
 }
 
